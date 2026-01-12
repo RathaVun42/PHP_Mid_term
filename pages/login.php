@@ -1,9 +1,9 @@
-<?php
+<!-- <?php
     // include '../../includes/header.inc.php';
     // include '../../includes/navbar.inc.php';
-    include $_SERVER['DOCUMENT_ROOT'] . '/G19BCSY3A/includes/header.inc.php'; //this absolute path
-    include '/xampp/htdocs/g19bcsy3a/includes/navbar.inc.php'; //this is also absolute path
-?>
+    //include $_SERVER['DOCUMENT_ROOT'] . '/G19BCSY3A/includes/header.inc.php'; //this absolute path
+    //include '/xampp/htdocs/g19bcsy3a/includes/navbar.inc.php'; //this is also absolute path
+?> -->
 
     
     <form class="col-lg-5 col-sm-5 mx-auto">
@@ -25,11 +25,11 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
-<?php
+<!-- <?php
     // include '../../includes/footer.inc.php';   this is relative path
     // include '/xampp/htdocs/G19BCSY3A/includes/footer.inc.php';
-    include $_SERVER['DOCUMENT_ROOT'] . '/G19BCSY3A/includes/footer.inc.php';
-?>
+    //include $_SERVER['DOCUMENT_ROOT'] . '/G19BCSY3A/includes/footer.inc.php';
+?> -->
 
 
 
