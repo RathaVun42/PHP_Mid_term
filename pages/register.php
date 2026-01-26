@@ -6,13 +6,13 @@
     // if(isset($_POST['email'])){
     //     echo $_POST['email'];
     // }
-    $nameErr = $usernameErr = $passErr = "";
-    $name = $username = "";
+    $nameErr = $usernameErr = $passErr = $confirmPassErr = "";
+    $name = $username = $pass= "";
     if(isset($_POST['name'], $_POST['username'],$_POST['pass'], $_POST['confirmPass'])){
-        $name = $_POST['name'];
-        $username = $_POST['username'];
+        $name = trim($_POST['name']);
+        $username = trim($_POST['username']);
         $pass = $_POST['pass'];
-        $confirmPass = $_POST['confirmPass'];
+        $confirmPass = trim($_POST['confirmPass']);
         if(empty($name)){
             $nameErr = "Please input name";
         }
@@ -22,6 +22,28 @@
         if(empty($pass)){
             $passErr = "Please input password";
         }
+        if($pass !=$confirmPass){
+            $confirmPassErr = "Not match password!";
+        }
+        
+
+        if(usernameExist($username)){
+            $usernameErr = "Please choose another username!";
+        }
+        if(empty($nameErr) && empty($usernameErr) && empty($passErr)){
+            if(userRegister($name, $username, $pass)){
+                echo '<div class="alert alert-success" role="alert">
+                        Register successfully!
+                    </div>';
+                $name = $username = $pass = "";
+            }
+            else{
+                echo '<div class="alert alert-danger" role="alert">
+                        Register failed!
+                    </div>';
+            }
+        };
+        
     }
 ?>
     
@@ -46,7 +68,7 @@
         </div>
         <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Confirm password</label>
-            <input name="confirmPass" type="password" class="form-control <?= ($pass===$confirmPass)?'':'is-invalid' ?> ?>" id="exampleInputPassword1">
+            <input name="confirmPass" type="password" class="form-control <?= empty($confirmPassErr) ?'':'is-invalid' ?> ?>" id="exampleInputPassword1">
         </div>
         <!-- <div class="mb-3 form-check">
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
