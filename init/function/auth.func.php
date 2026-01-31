@@ -21,4 +21,26 @@
         }
         return false;
     }
+
+    function login($username, $pass){
+        global $con;
+        //global $logPasswdErr;
+        //global $logUsernameErr;
+        $query = $con->prepare('select passwd from tbl_user where UserName = ?');
+        $query->bind_param('s',$username);
+        $query->execute();
+        $result = $query->get_result();
+        if($result->num_rows == 1){
+            $passwd = $result->fetch_assoc();
+            if($pass == $passwd['passwd']){
+                return true;
+            }else{
+                //$logPasswdErr = true;
+                return false;
+            }
+        }else{
+            //$logUsernameErr = true;
+            return false;
+        }
+    }
 ?>
