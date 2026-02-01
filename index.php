@@ -1,7 +1,7 @@
 <?php
     include $_SERVER['DOCUMENT_ROOT'] . '/G19BCSY3A/includes/header.inc.php'; //this absolute path
     include '/xampp/htdocs/g19bcsy3a/includes/navbar.inc.php'; //this is also absolute path
-    include '/xampp/htdocs/g19bcsy3a/init/init.php';
+    include './init/init.php';
     
         $pages = ["login","register"];
         if(isset($_GET['page'])){
