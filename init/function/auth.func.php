@@ -22,7 +22,7 @@
         return false;
     }
 
-    function login($username, $pass){
+    function login($username, $pass){// my research
         global $con;
         global $logPasswdErr;
         global $logUsernameErr;
@@ -44,5 +44,38 @@
             $logUsernameErr = true;
             return false;
         }
+    }
+
+    
+    function logUserIn($username, $pass){// teacher
+        global $con;
+        $query = $con->prepare('select * from tbl_user where UserName = ? and passwd = ?');
+        $query->bind_param('ss',$username, $pass);
+        $query->execute();
+        $result = $query->get_result();
+        if($result->num_rows){
+            return $result->fetch_object(); // can convert only one record to one object
+                                            // if result exists manu rows record, fetch_object will be failed
+        }else{
+            return false;
+        }
+    }
+    function loggedInUser(){
+        global $con;
+        if(!isset($_SESSION['user_id'])){
+            return null;
+        }
+        $query = $con->prepare('select * from tbl_user where UserID = ?');
+        $query->bind_param('d',$_SESSION['user_id']);
+        $query->execute();
+        $result = $query->get_result();
+        if($result->num_rows){
+            return $result->fetch_object(); // can convert only one record to one object
+                                            // if result exists manu rows record, fetch_object will be failed
+        }else{
+            return null;
+        }
+
+
     }
 ?>
