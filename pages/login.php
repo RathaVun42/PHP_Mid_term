@@ -11,10 +11,10 @@
         $username = trim($_POST["username"]);
         $password = trim($_POST["passwd"]);
         if(empty($username)){
-            $logUsernameErr = "Please input Username";
+            $InputUsernameErr = "Please input Username";
         }
         if(empty($password)){
-            $logPasswordErr = "Please input Password";
+            $InputPasswdErr = "Please input Password";
         }
     
         // if(login($username, $password)){
@@ -46,7 +46,7 @@
         <div class="mb-3">
             <!-- <?= $logUsernameErr?'is-invalid':'' ?> -->
             <label for="exampleInputEmail1" class="form-label">Username</label>
-            <input type="text" class="form-control  <?= empty($InputUsernameErr)?'':'is-invalid' ?>" name="username" value="<?= $logUsernameErr?'':$username ?>" >
+            <input type="text" class="form-control  <?= empty($InputUsernameErr)?'':'is-invalid' ?>" name="username" value="<?= $InputUsernameErr?'':$username ?>" >
             <div class="invalid-feedback"><?= $InputUsernameErr ?></div>
         <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Password</label>
