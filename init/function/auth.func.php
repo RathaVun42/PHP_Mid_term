@@ -65,6 +65,7 @@
         if(!isset($_SESSION['user_id'])){
             return null;
         }
+
         $query = $con->prepare('select * from tbl_user where UserID = ?');
         $query->bind_param('d',$_SESSION['user_id']);
         $query->execute();
@@ -77,5 +78,18 @@
         }
 
 
+    }
+    function isAdmin(){
+        $user = loggedInUser() ;
+        if($user && $user->level === 'admin'){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    function isUserHasPassword($passwd){
+        global $con;
+        $user = loggedInUser() ;
+        $query = $con->prepare('select * from tbl_user  ');
     }
 ?>
