@@ -11,10 +11,10 @@
         return false;
     }
 
-    function userRegister($name, $username, $pass){
+    function userRegister($name, $username,$level, $pass,$image){
         global $con;
-        $query = $con->prepare("insert into tbl_user (name, username, passwd) values(?,?,?)");
-        $query->bind_param('sss',$name,$username,$pass);// the first s is for the first param that have data type as string
+        $query = $con->prepare("insert into tbl_user (name, username,level, passwd,image) values(?,?,?,?,?)");
+        $query->bind_param('sssss',$name,$username,$level,$pass,$image);// the first s is for the first param that have data type as string
         $query->execute();
         if($query->affected_rows){// this will check whether query can insert to db or not
             return true;
@@ -90,6 +90,61 @@
     function isUserHasPassword($passwd){
         global $con;
         $user = loggedInUser() ;
-        $query = $con->prepare('select * from tbl_user  ');
+        $query = $con->prepare('select * from tbl_user where UserID = ? and passwd = ?');
+        $query->bind_param('ss',$user->UserID, $passwd);
+        $query->execute();
+        $result = $query->get_result();
+        if($result->num_rows){
+            return true;
+        }else{
+            return false;
+        }
     }
+    function setUserNewPassword($new_password){
+        global $con;
+        $user = loggedInUser() ;
+        $query = $con->prepare('update tbl_user set passwd = ? where UserID = ?');
+        $query->bind_param('ss',$new_password,$user->UserID);
+        $query->execute();
+        if($query->affected_rows){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    function updateToNullPic($userId)  {
+        global $con;
+        $query = $con->prepare("update tbl_user set image = null where UserID = ?");
+        $query->bind_param("d", $userId);
+        $query->execute();
+    }
+    function updatePic($new_pic){
+        global $con;
+        $user = loggedInUser() ;
+        $query = $con->prepare("update tbl_user set image = ? where UserID = ?");
+        $query->bind_param("sd",$new_pic, $user->UserID);
+        $query->execute();
+        if($query->affected_rows){
+            return true;
+        }else{
+            return false;
+        } 
+    }
+    function isCorrectFile($file_post){
+        $imageInfo = getimagesize($file_post['tmp_name']);
+        if($imageInfo){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    function allowedSize($file_post){
+        if($file_post['size'] < 3*1024*1024){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
 ?>
