@@ -41,6 +41,7 @@ if (isset($_POST['uploadPhoto'], $_FILES['photo']) && $_FILES['photo']['error'] 
     $userPic = $user->image;
     if (empty($userId))
         return;
+    
     if (isCorrectFile($_FILES['photo'])) {
         if (allowedSize($_FILES['photo'])) {
             if (updatePic($fileName)) {

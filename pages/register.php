@@ -7,21 +7,22 @@
 //     echo $_POST['email'];
 // }
 
-$nameErr = $usernameErr = $passErr = $confirmPassErr =$photoErr = $roleErr= "";
-$name = $username = $pass = "";
-if (isset($_POST['name'], $_POST['username'], $_POST['pass'], $_POST['confirmPass'],$_POST['role'])
+$nameErr = $usernameErr = $passErr = $confirmPassErr = $photoErr = $roleErr = "";
+$name = $username = $pass = $role = "";
+if (
+    isset($_POST['name'], $_POST['username'], $_POST['pass'], $_POST['confirmPass'], $_POST['role'])
     // && isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
-){
+) {
     $name = trim($_POST['name']);
     $username = trim($_POST['username']);
     $pass = $_POST['pass'];
     $confirmPass = trim($_POST['confirmPass']);
     $role = $_POST['role'];
     $photo_name = $_FILES['photo']['name'];
-    if(empty($role)){
+    if (empty($role)) {
         $roleErr = "Please select role";
     }
-    if($_FILES['photo']['error'] === UPLOAD_ERR_NO_FILE){
+    if ($_FILES['photo']['error'] === UPLOAD_ERR_NO_FILE) {
         $photoErr = "Please select a file of photo";
     }
     if (empty($name)) {
@@ -39,34 +40,34 @@ if (isset($_POST['name'], $_POST['username'], $_POST['pass'], $_POST['confirmPas
     if (usernameExist($username)) {
         $usernameErr = "Please choose another username!";
     }
-    if (empty($nameErr) && empty($usernameErr) && empty($passErr) && empty($roleErr) && empty($photoErr)) {
-        if (userRegister($name, $username,$role, $pass,$photo_name)) {
-            $move = move_uploaded_file($_FILES["photo"]["tmp_name"],"./assets/images/".$_FILES['photo']['name']);
-            if ($move) {
-                echo "Hello";
-            }else{
-                echo "Bitch";
-            }
-            echo '<div class="alert alert-success" role="alert">
+    if (allowedSize($_FILES['photo'])) {
+        if (empty($nameErr) && empty($usernameErr) && empty($passErr) && empty($roleErr) && empty($photoErr)) {
+            if (userRegister($name, $username, $role, $pass, $photo_name)) {
+                $move = move_uploaded_file($_FILES["photo"]["tmp_name"], "./assets/images/" . $_FILES['photo']['name']);
+                echo '<div class="alert alert-success" role="alert">
                         Register successfully!
                     </div>';
-            $name = $username = $pass = $role= $photo_name ="";
-        } else {
-            echo '<div class="alert alert-danger" role="alert">
+                $name = $username = $pass = $role = $photo_name = "";
+            } else {
+                echo '<div class="alert alert-danger" role="alert">
                         Register failed!
                     </div>';
+            }
         }
+    }else{
+        echo '<div class="alert alert-danger" role="alert">
+                       cannot be load because file is to big!
+              </div>';
     }
-    ;
 
-}else{
-    echo "Hello";
-}
+
+
+} 
 ?>
 
 
 
-<form class="col-lg-5 col-sm-5 mx-auto" method="post" action="./?page=register " enctype="multipart/form-data"  >
+<form class="col-lg-5 col-sm-5 mx-auto" method="post" action="./?page=register " enctype="multipart/form-data">
     <h1>Register page</h1>
     <div class="mb-3">
         <label class="form-label">Name</label>
@@ -83,12 +84,12 @@ if (isset($_POST['name'], $_POST['username'], $_POST['pass'], $_POST['confirmPas
     <div class="mb-3">
         <label class="form-label">Role</label>
         <select class="form-select" aria-label="Default select example" name="role">
-        <option value="">Role</option>
-        <option value="admin">admin</option>
-        <option value="user">user</option>
-    </select>
+            <option value="">Role</option>
+            <option value="admin" <?php echo $role == 'admin'?'Selected': '' ?> >admin</option>
+            <option value="user" <?php echo $role == 'user'?'Selected': '' ?> >user</option>
+        </select>
     </div>
-    
+
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Password</label>
         <input name="pass" type="password" class="form-control <?= empty($passErr) ? '' : 'is-invalid'; ?>"
@@ -97,8 +98,8 @@ if (isset($_POST['name'], $_POST['username'], $_POST['pass'], $_POST['confirmPas
     </div>
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Confirm password</label>
-        <input name="confirmPass" type="password" class="form-control <?= empty($confirmPassErr) ? '' : 'is-invalid' ?> ?>"
-            id="exampleInputPassword1">
+        <input name="confirmPass" type="password"
+            class="form-control <?= empty($confirmPassErr) ? '' : 'is-invalid' ?> ?>" id="exampleInputPassword1">
     </div>
     <div class="mb-3">
         <label for="photo" class="form-label">Photo</label>
@@ -109,5 +110,5 @@ if (isset($_POST['name'], $_POST['username'], $_POST['pass'], $_POST['confirmPas
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
             <label class="form-check-label" for="exampleCheck1">Check me out</label>
         </div> -->
-    <button name = "submit"type="submit" class="btn btn-primary">Submit</button>
+    <button name="submit" type="submit" class="btn btn-primary">Submit</button>
 </form>
